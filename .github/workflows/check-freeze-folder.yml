@@ -35,7 +35,8 @@ jobs:
             FILE_NAME=$(basename "$file" .qmd)
             echo "$FILE_NAME"
             echo "_freeze/posts/$FILE_NAME" 
-            if [ ! -d "_freeze/posts/$FILE_NAME" ]; then
+            echo "[ ! -d "./_freeze/posts/$FILE_NAME" ]"
+            if [ ! -d "./_freeze/posts/$FILE_NAME" ]; then
               echo "GOING TO ERROR"
               echo "Render your challenge qmd file in posts folder to get freeze files" > pr_message.txt
               echo "success=false" >> $GITHUB_ENV
