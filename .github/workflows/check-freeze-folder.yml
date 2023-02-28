@@ -36,7 +36,7 @@ jobs:
           echo "success=true" >> $GITHUB_ENV_FILE
 
       - name: Show environment variables
-        run: cat $GITHUB_ENV_FILE
+        run: cat $GITHUB_ENV
 
       - name: Create a comment on the pull request
         if: ${{ env.success == 'false' || !env.success }}
@@ -63,6 +63,3 @@ jobs:
               issue_number: context.issue.number,
               assignees: [pullRequest.user.login]
             });
-
-      - name: Cleanup environment file
-        run: rm $GITHUB_ENV_FILE
