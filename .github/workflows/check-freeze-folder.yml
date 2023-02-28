@@ -25,6 +25,8 @@ jobs:
         run: |
           for file in ./posts/*.qmd; do
             FILE_NAME=$(basename "$file" .qmd)
+            echo "$FILE_NAME"
+            echo "-d _freeze/posts/$FILE_NAME"
             if [ ! -d "_freeze/posts/$FILE_NAME" ]; then
               echo "Render your challenge qmd file in posts folder to get freeze files" > pr_message.txt
               echo "::set-output name=success::false"
