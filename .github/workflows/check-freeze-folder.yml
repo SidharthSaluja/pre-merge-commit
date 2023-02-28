@@ -27,16 +27,14 @@ jobs:
             FILE_NAME=$(basename "$file" .qmd)
             if [ ! -d "_freeze/posts/$FILE_NAME" ]; then
               echo "Render your challenge qmd file in posts folder to get freeze files" > pr_message.txt
+              echo "::set-output name=success::false"
               exit 1
             fi
           done
-
-      - name: Set output
-        id: output
-        run: echo "::set-output name=status::success"
+          echo "::set-output name=success::true"
 
       - name: Create a comment on the pull request
-        if: ${{ steps.output.status != 'success' }}
+        if: ${{ steps.check_for_freeze_folder.outputs.success == 'false' }}
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -47,9 +45,16 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.issue.number,
             });
+            const comment = `**Warning:** ${message}`;
             await github.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `**Warning:** ${message}`,
+              body: comment,
+            });
+            await github.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              assignees: [pullRequest.user.login]
             });
