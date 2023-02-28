@@ -28,6 +28,7 @@ jobs:
             echo "$FILE_NAME"
             echo "$-d _freeze/posts/$FILE_NAME"
             if [ ! -d "_freeze/posts/$FILE_NAME" ]; then
+              echo "GOING TO ERROR "
               echo "Render your challenge qmd file in posts folder to get freeze files" > pr_message.txt
               echo "success=false" >> $GITHUB_ENV
               exit 1
@@ -35,8 +36,13 @@ jobs:
           done
           echo "success=true" >> $GITHUB_ENV
 
+      - name: Show environment variables
+        run: |
+          echo "QMD_FILES=$QMD_FILES"
+          echo "success=$success"
+
       - name: Create a comment on the pull request
-        if: ${{ env.success == 'false' }}
+        if: ${{ env.success == 'false' || env.success == false }}
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
