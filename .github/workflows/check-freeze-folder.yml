@@ -29,16 +29,17 @@ jobs:
             if [ ! -d "_freeze/posts/$FILE_NAME" ]; then
               echo "Going to error"
               echo "Render your challenge qmd file in posts folder to get freeze files" > pr_message.txt
-              echo "::set-env name=success::false"
+              echo "success=false" >> $GITHUB_ENV_FILE
+              exit 1
             fi
           done
+          echo "success=true" >> $GITHUB_ENV_FILE
 
       - name: Show environment variables
-        if: ${{ env.success == 'false' }}
-        run: env
+        run: cat $GITHUB_ENV_FILE
 
       - name: Create a comment on the pull request
-        if: ${{ env.success == 'false' }}
+        if: ${{ env.success == 'false' || !env.success }}
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -62,3 +63,6 @@ jobs:
               issue_number: context.issue.number,
               assignees: [pullRequest.user.login]
             });
+
+      - name: Cleanup environment file
+        run: rm $GITHUB_ENV_FILE
