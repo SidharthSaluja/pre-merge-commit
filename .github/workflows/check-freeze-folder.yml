@@ -1,0 +1,53 @@
+name: Check for freeze folder
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check_for_freeze_folder:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Find qmd files
+        id: qmd_files
+        run: |
+          QMD_FILES=$(find ./posts -name "*.qmd" | wc -l)
+          echo "::set-output name=qmd_files::$QMD_FILES"
+
+      - name: Check for freeze folder
+        if: ${{ steps.qmd_files.outputs.qmd_files != '0' }}
+        run: |
+          for file in ./posts/*.qmd; do
+            FILE_NAME=$(basename "$file" .qmd)
+            if [ ! -d "_freeze/posts/$FILE_NAME" ]; then
+              echo Render your challenge qmd file in posts folder to get freeze files" > pr_message.txt
+              exit 1
+            fi
+          done
+
+      - name: Set output
+        id: output
+        run: echo "::set-output name=status::success"
+
+      - name: Create a comment on the pull request
+        if: ${{ steps.output.status != 'success' }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const message = fs.readFileSync('pr_message.txt', 'utf8');
+            const { data: pullRequest } = await github.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+            await github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `**Warning:** ${message}`,
+            });
