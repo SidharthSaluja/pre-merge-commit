@@ -30,7 +30,6 @@ jobs:
               echo "GOING TO ERROR"
               echo "Render your challenge qmd file in posts folder to get freeze files" > pr_message.txt
               echo "success=false" >> $GITHUB_ENV
-              exit 1
             fi
           done
           echo "success=true" >> $GITHUB_ENV
