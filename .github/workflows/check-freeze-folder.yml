@@ -38,7 +38,7 @@ jobs:
             echo "successVal=false" >> $GITHUB_ENV
           else
             echo "successVal=true" >> $GITHUB_ENV
-          
+          fi
 
       - name: Show environment variables
         run: env
