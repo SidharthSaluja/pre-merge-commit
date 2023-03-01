@@ -34,6 +34,7 @@ jobs:
       - name: Check for freeze folder
         if: ${{ env.QMD_FILES != '0' }}
         run: |
+          echo "success=false" >> $GITHUB_ENV
           for file in ./posts/*.qmd; do
             FILE_NAME=$(basename "$file" .qmd)
             echo "$FILE_NAME"
