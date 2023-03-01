@@ -47,7 +47,7 @@ jobs:
             fi
           done
           echo "${{ env.success }}"
-          if ${{ env.success == "false"}}; then
+          if [ "${{ env.success }}" = "false" ]; then
             echo "FALSE!"
             echo "successVal=false" >> $GITHUB_ENV
           else
