@@ -47,7 +47,7 @@ jobs:
             fi
           done
           echo "${{ env.success }}"
-          if [ "${{ env.success }}" = "false" ]; then
+          if [ "${{ env.success }}" == "false" ]; then
             echo "FALSE!"
             echo "successVal=false" >> $GITHUB_ENV
           else
@@ -59,7 +59,7 @@ jobs:
         run: env
 
       - name: Create a comment on the pull request
-        if: ${{ env.successVal == "false"}}
+        if: ${{ env.successVal == 'false'}}
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
