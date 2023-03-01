@@ -42,15 +42,14 @@ jobs:
             if [ ! -d "./_freeze/posts/$FILE_NAME" ]; then
               echo "GOING TO ERROR"
               echo "Render your challenge qmd file in posts folder to get freeze files" > pr_message.txt
-              echo "success=false" >> $GITHUB_ENV
-              echo "success=${{ env.success }}"
+              success=false
               echo $success
               echo "::error::Render your challenge qmd file in posts folder to get freeze files"
               break
             fi
           done
           echo "${{ env.success }}"
-          if [[ "${{ env.success }}" == "false" ]]; then
+          if [[ "${success}" == "false" ]]; then
             echo "FALSE!"
             echo "successVal=false" >> $GITHUB_ENV
           else
