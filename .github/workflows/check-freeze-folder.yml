@@ -44,6 +44,7 @@ jobs:
               echo "Render your challenge qmd file in posts folder to get freeze files" > pr_message.txt
               echo "success=false" >> $GITHUB_ENV
               echo "success=${{ env.success }}"
+              echo $success
               echo "::error::Render your challenge qmd file in posts folder to get freeze files"
               break
             fi
