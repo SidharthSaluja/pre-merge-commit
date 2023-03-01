@@ -56,7 +56,7 @@ jobs:
         run: env
 
       - name: Create a comment on the pull request
-        if: ${{ env.successVal == 'false' || !env.successVal }}
+        if: ${{ env.successVal == 'false'}}
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
