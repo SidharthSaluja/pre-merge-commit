@@ -61,7 +61,7 @@ jobs:
 
       - name: Create a comment on the pull request
         if: ${{ env.successVal == 'false'}}
-      - uses: actions/github-script@v6
+        uses: actions/github-script@v6
         with:
           github-token: ${{secrets.PAT}}
           script: |
