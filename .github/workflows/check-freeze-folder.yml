@@ -63,9 +63,8 @@ jobs:
         if: ${{ env.successVal == 'false'}}
         uses: actions/github-script@v6
         with:
-        github-token: ${{ secrets.PAT }}
-        script: |
-          const issueComment = context.issue({
-          body: 'Please render your challenge qmd file in the `posts` folder to generate the `freeze` folder.'
-          })
-          await github.issues.createComment(issueComment)
+          github-token: ${{ secrets.PAT }}
+          script: |
+            const { owner, repo, number } = context.issue;
+            const comment = 'Please render your challenge qmd file in the `posts` folder to generate the `freeze` folder.';
+            github.issues.createComment({ owner, repo, issue_number: number, body: comment });
