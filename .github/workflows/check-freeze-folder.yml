@@ -61,12 +61,11 @@ jobs:
 
       - name: Create a comment on the pull request
         if: ${{ env.successVal == 'false'}}
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           github-token: ${{secrets.PAT}}
           script: |
             console.log(context);
-            console.log(${{secrets.PAT}});
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
