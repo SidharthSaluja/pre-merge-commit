@@ -65,8 +65,8 @@ jobs:
         with:
           github-token: ${{ secrets.PAT }}
           script: |
-            const github = require('@actions/github');
-            const context = github.context;
+            const octokit = require('@actions/github').getOctokit(process.env.GITHUB_TOKEN);
+            const context = require('@actions/github').context;
             const { owner, repo, number } = context.issue;
             const body = 'Please render your challenge qmd file in the `posts` folder to generate the `freeze` folder.';
-            github.getOctokit(process.env.GITHUB_TOKEN).pulls.createReview({ owner, repo, pull_number: number, body: body, event: 'REQUEST_CHANGES' });
+            octokit.rest.pulls.createReview({ owner, repo, pull_number: number, body: body, event: 'REQUEST_CHANGES' });
