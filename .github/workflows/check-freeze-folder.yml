@@ -67,4 +67,5 @@ jobs:
           script: |
             const { owner, repo, number } = context.issue;
             const body = 'Please render your challenge qmd file in the `posts` folder to generate the `freeze` folder.';
+            const github = context.github;
             github.pulls.createReview({ owner, repo, pull_number: number, body: body, event: 'REQUEST_CHANGES' });
