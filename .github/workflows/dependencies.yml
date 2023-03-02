@@ -1,0 +1,20 @@
+# This workflow will add dependencies for your workflow
+# You can use this workflow to install any additional dependencies required for your workflow
+
+name: Dependencies
+
+on:
+  workflow_dispatch:
+
+jobs:
+  add-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Add dependencies
+        run: |
+          npx actions-add-comment \
+            "Adding dependencies for my workflow"
+
+          npm install mshick/add-pr-comment@v2
