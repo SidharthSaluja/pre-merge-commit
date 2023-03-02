@@ -65,7 +65,7 @@ jobs:
         with:
           github-token: ${{ secrets.PAT }}
           script: |
-            const octokit = require('@actions/github').getOctokit({{ secrets.PAT }});
+            const octokit = require('@actions/github').getOctokit(${{ secrets.PAT }});
             const { owner, repo, number } = context.issue;
             const body = 'Please render your challenge qmd file in the `posts` folder to generate the `freeze` folder.';
             octokit.rest.issues.createComment({ owner, repo, issue_number: number, body: body });
