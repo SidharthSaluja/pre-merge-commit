@@ -66,5 +66,5 @@ jobs:
           github-token: ${{ secrets.PAT }}
           script: |
             const { owner, repo, number } = context.issue;
-            const comment = 'Please render your challenge qmd file in the `posts` folder to generate the `freeze` folder.';
-            github.issues.createComment({ owner, repo, issue_number: number, body: comment });
+            const body = 'Please render your challenge qmd file in the `posts` folder to generate the `freeze` folder.';
+            github.pulls.createReview({ owner, repo, pull_number: number, body: body, event: 'REQUEST_CHANGES' });
