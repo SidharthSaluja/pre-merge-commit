@@ -16,7 +16,6 @@ jobs:
         with:
           ref: ${{github.event.pull_request.head.ref}}
           repository: ${{github.event.pull_request.head.repo.full_name}}
-          token: ${{ secrets.PAT }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -62,9 +61,11 @@ jobs:
 
       - name: Create a comment on the pull request
         if: ${{ env.successVal == 'false'}}
-        uses: mshick/add-pr-comment@v2
+        uses: actions/github-script@v6
         with:
-          message: "Render your challenge qmd file in posts folder to get freeze files"
-
-        
-        
+        github-token: ${{ secrets.PAT }}
+        script: |
+          const issueComment = context.issue({
+          body: 'Please render your challenge qmd file in the `posts` folder to generate the `freeze` folder.'
+          })
+          await github.issues.createComment(issueComment)
