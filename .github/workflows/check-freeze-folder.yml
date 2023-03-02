@@ -61,11 +61,15 @@ jobs:
 
       - name: Create a comment on the pull request
         if: ${{ env.successVal == 'false'}}
-        uses: actions/github-script@v6
+      - uses: actions/github-script@v5
         with:
-          github-token: ${{ secrets.PAT }}
+          github-token: ${{secrets.PAT}}
           script: |
-            const octokit = require('@actions/github').getOctokit(${{ secrets.PAT }});
-            const { owner, repo, number } = context.issue;
-            const body = 'Please render your challenge qmd file in the `posts` folder to generate the `freeze` folder.';
-            octokit.rest.issues.createComment({ owner, repo, issue_number: number, body: body });
+            console.log(context)
+            console.log(${{secrets.PAT}})
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Hello world'
+            })
