@@ -65,8 +65,6 @@ jobs:
         uses: mshick/add-pr-comment@v2
         with:
           message: "Render your challenge qmd file in posts folder to get freeze files"
-        permissions:
-          pull-requests: write
 
         
         
