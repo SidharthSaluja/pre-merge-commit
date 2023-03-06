@@ -28,7 +28,7 @@ jobs:
       - name: Find qmd files
         id: qmd_files
         run: |
-          QMD_FILES=$(find ./posts -name "*.qmd" | wc -l)
+          QMD_FILES=$(find ./posts -name "*.qmd" | wc -l || true)
           echo "QMD_FILES=$QMD_FILES" >> $GITHUB_ENV
 
       - name: Check for freeze folder
