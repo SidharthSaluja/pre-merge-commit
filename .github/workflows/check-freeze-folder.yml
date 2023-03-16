@@ -56,19 +56,38 @@ jobs:
             echo "successVal=true" >> $GITHUB_ENV
           fi
 
+      - name: Check for modified files
+        if: ${{ env.successVal == 'true'}}
+        id: modified_files
+        run: |
+          MODIFIED_FILES=$(git diff --name-only origin/main | grep -vE '(about/|posts/|_freeze/)' || true)
+          echo "MODIFIED_FILES=$MODIFIED_FILES" >> $GITHUB_ENV
+
       - name: Show environment variables
         run: env
 
       - name: Create a comment on the pull request
-        if: ${{ env.successVal == 'false'}}
+        if: ${{ env.successVal == 'false' }}
         uses: actions/github-script@v6
         with:
           github-token: ${{secrets.PAT}}
           script: |
-            console.log(context);
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: 'Please render your challenge qmd file in post folder to generate freeze files'
+            })
+
+      - name: Create a comment on the pull request for modified files
+        if: ${{ env.successVal == 'true' && env.MODIFIED_FILES != '' }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.PAT}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'You have modified files outside of the "about", "posts", and "_freeze"
             })
