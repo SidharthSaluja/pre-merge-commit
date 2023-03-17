@@ -1,5 +1,3 @@
 # pre-merge-commit
 
 changed
-!
-!
