@@ -59,7 +59,7 @@ jobs:
       - name: Check for modified files
         id: modified_files
         run: |
-          MODIFIED_FILES=$(git diff --name-only origin/main | grep -vE '^(about/|posts/|_freeze/)' || true)
+          MODIFIED_FILES=$(git diff --name-only origin/template | grep -vE '(about/|posts/|_freeze/)' || true)
           echo "MODIFIED_FILES=$MODIFIED_FILES" >> $GITHUB_ENV
 
       - name: Show environment variables
